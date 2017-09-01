@@ -1,0 +1,53 @@
+import csv
+#https://github.com/fivethirtyeight/data/blob/master/nfl-suspensions/nfl-suspensions-data.csv
+
+#Read into list and removed header
+f = open("nfl_suspensions_data.csv")
+nfl_suspensions =  list(csv.reader(f))
+nfl_suspensions = nfl_suspensions[1:]
+
+years_column = nfl_suspensions[5]
+years = {}
+
+#Count number of times value in year column occurs
+for suspension in nfl_suspensions:
+    row_year = suspension[5]
+    if row_year in years:
+        years[row_year] = years[row_year] + 1
+    else:
+        years[row_year] = 1
+
+print(years)
+
+#Retrieve unique teams
+teams = [row[1] for row in nfl_suspensions]
+unique_teams = set(teams)
+print(unique_teams)
+
+#Retrieve unique games
+games = [row[2] for row in nfl_suspensions]
+unique_games = set(games)
+print(unique_games)
+
+#Create Suspension class, useful to rep each suspension in NFL dataset
+class Suspension():
+    def __init__(self,row):
+        self.name = row[0]
+        self.team = row[1]
+        self.games = row[2] 
+        self.year = row[5]
+#Test with instance
+third_suspension = Suspension(nfl_suspensions[2])
+
+#Extend functionality of Suspension class by using try except block for year
+class Suspension():
+    def __init__(self,row):
+        self.name = row[0]
+        self.team = row[1]
+        self.games = row[2]
+        try:
+            self.year = int(row[5])
+        except Exception:
+            self.year = 0
+    def get_year(self):
+        return(self.year)
